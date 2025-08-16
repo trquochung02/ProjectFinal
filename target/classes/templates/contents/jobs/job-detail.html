@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Job Detail</title>
+</head>
+<body>
+<div layout:fragment="pageTitle">Job Detail</div>
+
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a th:href="@{/jobs}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Job List</a>
+            <span class="fst-italic text-muted" style="font-size: 0.85rem;">
+                Created on <span th:text="${#temporals.format(job.createdAt, 'dd/MM/yyyy')}"></span>,
+                last updated <span th:text="${#temporals.format(job.updatedAt, 'dd/MM/yyyy')}"></span>
+            </span>
+        </div>
+
+        <h4 class="mb-4" th:text="${job.jobTitle}"></h4>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <strong>Start Date:</strong>
+                <p th:text="${#temporals.format(job.startDate, 'dd/MM/yyyy')}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>End Date:</strong>
+                <p th:text="${#temporals.format(job.endDate, 'dd/MM/yyyy')}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Skills:</strong>
+                <p th:text="${job.requiredSkills}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Benefits:</strong>
+                <p th:text="${job.benefits}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Salary Range:</strong>
+                <p th:text="'From ' + ${job.salaryRangeFrom} + ' to ' + ${job.salaryRangeTo}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Level:</strong>
+                <p th:text="${job.level}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Working Address:</strong>
+                <p th:text="${job.workingAddress}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Status:</strong>
+                <p><span class="badge bg-primary" th:text="${job.status}"></span></p>
+            </div>
+            <div class="col-12 mb-3">
+                <strong>Description:</strong>
+                <p th:text="${job.description}"></p>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <a th:href="@{/jobs}" class="btn btn-secondary me-2">Cancel</a>
+            <a th:href="@{/jobs/edit/{id}(id=${job.jobId})}" role="button" class="btn btn-primary" sec:authorize="hasAnyAuthority('Admin', 'Manager', 'Recruiter')">Edit Job</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

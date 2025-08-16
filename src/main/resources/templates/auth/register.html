@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/authLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Register</title>
+</head>
+<body>
+<div class="d-flex justify-content-center align-items-center" layout:fragment="content">
+    <div class="col-6" id="loginForm">
+        <form th:action="@{/auth/register}" method="post" th:object="${user}">
+            <div class="mb-5 d-flex justify-content-center align-items-center" id="formLoginHeader">
+                <img src="/images/dev.png" alt="Logo" class="me-2">
+                <span class="fw-bold fs-3">Create Account</span>
+            </div>
+
+            <div class="mb-3" th:if="${errorMessage}">
+                <span class="text-danger fst-italic" th:text="${errorMessage}"></span>
+            </div>
+
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <label for="fullName" class="form-label me-2">Full Name</label>
+                <div class="w-75">
+                    <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+                    <span class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                </div>
+            </div>
+
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <label for="email" class="form-label me-2">Email</label>
+                <div class="w-75">
+                    <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+            </div>
+
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <label for="password" class="form-label me-2">Password</label>
+                <div class="w-75">
+                    <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                    <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </div>
+            <div class="text-center mt-3">
+                <a th:href="@{/auth/login}">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Edit Offer</title>
+</head>
+<body>
+<div layout:fragment="pageTitle">Edit Offer</div>
+
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style"> <form th:action="@{/offers/edit/{id}(id=${offer.offerId})}" th:object="${offer}" method="post">
+        <input type="hidden" th:field="*{offerId}"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="candidateId" class="form-label">Candidate</label>
+                    <select class="form-select" id="candidateId" th:field="*{candidateId}" required>
+                        <option value="">Select Candidate</option>
+                        <option th:each="c : ${candidates}" th:value="${c.candidateId}" th:text="${c.fullName}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="approverId" class="form-label">Approver (Manager)</label>
+                    <select class="form-select" id="approverId" th:field="*{approverId}" required>
+                        <option value="">Select Approver</option>
+                        <option th:each="m : ${managers}" th:value="${m.userId}" th:text="${m.fullName}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department</label>
+                    <input type="text" class="form-control" id="department" th:field="*{department}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level</label>
+                    <input type="text" class="form-control" id="level" th:field="*{level}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contractType" class="form-label">Contract Type</label>
+                    <input type="text" class="form-control" id="contractType" th:field="*{contractType}" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="basicSalary" class="form-label">Basic Salary</label>
+                    <input type="number" class="form-control" id="basicSalary" th:field="*{basicSalary}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contractPeriodFrom" class="form-label">Contract From</label>
+                    <input type="date" class="form-control" id="contractPeriodFrom" th:field="*{contractPeriodFrom}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contractPeriodTo" class="form-label">Contract To</label>
+                    <input type="date" class="form-control" id="contractPeriodTo" th:field="*{contractPeriodTo}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="dueDate" class="form-label">Due Date</label>
+                    <input type="date" class="form-control" id="dueDate" th:field="*{dueDate}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="offerStatus" class="form-label">Status</label>
+                    <select class="form-select" id="offerStatus" th:field="*{offerStatus}" required>
+                        <option value="Waiting for Approval">Waiting for Approval</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Declined">Declined</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-3">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <a th:href="@{/offers}" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+    </div>
+</div>
+</body>
+</html>

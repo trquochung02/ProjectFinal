@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Homepage</title>
+</head>
+<body>
+<div id="mainBoard" layout:fragment="content">
+
+    <div class="container" sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')">
+        <div class="row">
+            <div class="col-12">
+                <h4>Candidates in Progress</h4>
+            </div>
+        </div>
+
+        <div class="row table-data mt-3">
+            <div class="col-12 table-responsive">
+                <div th:if="${dashboardCandidates == null || dashboardCandidates.isEmpty()}">
+                    <p>No candidates are currently in the review process.</p>
+                </div>
+
+                <table class="table table-striped table-hover" th:if="${dashboardCandidates != null && !dashboardCandidates.isEmpty()}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Current Position</th>
+                        <th scope="col">Owner HR</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-body-data">
+                    <tr th:each="candidate : ${dashboardCandidates}">
+                        <td th:text="${candidate.fullName}"></td>
+                        <td th:text="${candidate.currentPosition}" style="background-color: #EBEFF3"></td>
+                        <td th:text="${candidate.recruiterOwner}"></td>
+                        <td th:text="${candidate.status}" style="background-color: #EBEFF3"></td>
+                        <td>
+                            <a class="btn" th:href="@{/candidates/detail/{id}(id=${candidate.candidateId})}">
+                                <img src="/images/visible.png" alt="View Detail">
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

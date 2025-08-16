@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-GB" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Add New Interview Schedule</title>
+    <script th:inline="javascript">
+        window.onload = function () {
+            const interviewersUsernameList = document.getElementById('interviewersSelectTag');
+            if (interviewersUsernameList) {
+                const multipleInterviewerSelect = new Choices(interviewersUsernameList, {
+                    removeItemButton: true,
+                    maxItemCount: 5,
+                    searchResultLimit: 5,
+                    renderChoiceLimit: 5
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style">
+        <div class="mb-4">
+            <a th:href="@{/interview-schedules}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Schedule List
+            </a>
+        </div>
+        <h4 class="mb-4">New Interview Schedule</h4>
+
+        <form th:action="@{/interview-schedules/create}" method="post" th:object="${scheduleCreateDTO}">
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <ul>
+                    <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="scheduleTitle" class="form-label">Schedule Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="scheduleTitle" th:field="*{scheduleTitle}" placeholder="e.g., Final Interview for Java Developer">
+                        <small th:if="${#fields.hasErrors('scheduleTitle')}" class="text-danger" th:errors="*{scheduleTitle}"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="candidateId" class="form-label">Candidate Name <span class="text-danger">*</span></label>
+                        <select id="candidateId" class="form-select" th:field="*{candidateId}">
+                            <option value="">Select candidate...</option>
+                            <option th:each="candidate : ${candidates}" th:value="${candidate.candidateId}" th:text="${candidate.fullName}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('candidateId')}" class="text-danger" th:errors="*{candidateId}"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jobId" class="form-label">Job <span class="text-danger">*</span></label>
+                        <select id="jobId" class="form-select" th:field="*{jobId}">
+                            <option value="">Select a job...</option>
+                            <option th:each="job : ${jobs}" th:value="${job.jobId}" th:text="${job.jobTitle}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('jobId')}" class="text-danger" th:errors="*{jobId}"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="interviewersSelectTag" class="form-label">Interviewer(s) <span class="text-danger">*</span></label>
+                        <select id="interviewersSelectTag" th:field="*{interviewersIdList}" multiple>
+                            <option th:each="interviewer : ${interviewers}" th:value="${interviewer.getUserId()}" th:text="${interviewer.username}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('interviewersIdList')}" class="text-danger" th:errors="*{interviewersIdList}"></small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="scheduleDate" class="form-label">Schedule Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="scheduleDate" th:field="*{scheduleDate}">
+                        <small th:if="${#fields.hasErrors('scheduleDate')}" class="text-danger" th:errors="*{scheduleDate}"></small>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="scheduleFrom" class="form-label">From <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="scheduleFrom" th:field="*{scheduleFrom}">
+                            <small th:if="${#fields.hasErrors('scheduleFrom')}" class="text-danger" th:errors="*{scheduleFrom}"></small>
+                        </div>
+                        <div class="col-6">
+                            <label for="scheduleTo" class="form-label">To <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="scheduleTo" th:field="*{scheduleTo}">
+                            <small th:if="${#fields.hasErrors('scheduleTo')}" class="text-danger" th:errors="*{scheduleTo}"></small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" th:field="*{location}" placeholder="e.g., Office, Google Meet URL,...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="meetingId" class="form-label">Meeting ID</label>
+                        <input type="text" class="form-control" id="meetingId" th:field="*{meetingId}" placeholder="e.g., zoom123">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="recruiterOwner" class="form-label">Recruiter Owner <span class="text-danger">*</span></label>
+                        <select id="recruiterOwner" class="form-select" th:field="*{recruiterOwner}">
+                            <option value="">Select recruiter...</option>
+                            <option th:each="recruiter : ${recruiters}" th:value="${recruiter.getUserId()}" th:text="${recruiter.username}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('recruiterOwner')}" class="text-danger" th:errors="*{recruiterOwner}"></small>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" th:field="*{notes}" rows="3" placeholder="Type schedule note..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+                <a th:href="@{/interview-schedules}" class="btn btn-secondary me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

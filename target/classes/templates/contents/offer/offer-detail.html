@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/mainLayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head><title>Offer Detail</title></head>
+<body>
+<div layout:fragment="pageTitle">Offer Detail</div>
+<div layout:fragment="content">
+    <div class="card-style">
+        <p><strong>Candidate:</strong> <span th:text="${offer.candidateName}"></span></p>
+        <p><strong>Approver:</strong> <span th:text="${offer.approverName}"></span></p>
+        <a th:href="@{/offers}" class="btn btn-secondary mt-3">Back to list</a>
+    </div>
+</div>
+</body>
+</html>

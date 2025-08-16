@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Edit Job</title>
+    <script th:inline="javascript">
+        window.onload = function () {
+            if (typeof Choices !== 'undefined') {
+                const skillsSelectTag = document.getElementById('skillsSelectTag');
+                if (skillsSelectTag) {
+                    const multipleSkillSelect = new Choices(skillsSelectTag, { removeItemButton: true });
+                    var selectedSkills = /*[[${requiredSkillList}]]*/ [];
+                    if (selectedSkills) multipleSkillSelect.setChoiceByValue(selectedSkills);
+                }
+
+                const benefitsSelectTag = document.getElementById('benefitsSelectTag');
+                if (benefitsSelectTag) {
+                    const multipleBenefitsSelect = new Choices(benefitsSelectTag, { removeItemButton: true });
+                    var selectedBenefits = /*[[${benefitList}]]*/ [];
+                    if(selectedBenefits) multipleBenefitsSelect.setChoiceByValue(selectedBenefits);
+                }
+
+                const levelsSelectTag = document.getElementById('levelsSelectTag');
+                if (levelsSelectTag) {
+                    const multipleLevelsSelect = new Choices(levelsSelectTag, { removeItemButton: true });
+                    var selectedLevels = /*[[${levelList}]]*/ [];
+                    if(selectedLevels) multipleLevelsSelect.setChoiceByValue(selectedLevels);
+                }
+            }
+        };
+    </script>
+</head>
+<body>
+<div layout:fragment="pageTitle">Edit Job</div>
+
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style">
+        <form th:action="@{/jobs/edit/{id}(id=${job.jobId})}" method="post" th:object="${job}">
+            <input type="hidden" th:field="*{jobId}"/>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="jobTitle" class="form-label">Job Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">Start Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="startDate" th:field="*{startDate}">
+                        <small class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="endDate" th:field="*{endDate}">
+                        <small class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></small>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label">Salary Range</label>
+                        <div class="col-6">
+                            <input type="number" min="0" class="form-control" placeholder="From" th:field="*{salaryRangeFrom}">
+                            <small class="text-danger" th:if="${#fields.hasErrors('salaryRangeFrom')}" th:errors="*{salaryRangeFrom}"></small>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" min="0" class="form-control" placeholder="To" th:field="*{salaryRangeTo}">
+                            <small class="text-danger" th:if="${#fields.hasErrors('salaryRangeTo')}" th:errors="*{salaryRangeTo}"></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="skillsSelectTag" class="form-label">Skills <span class="text-danger">*</span></label>
+                        <select id="skillsSelectTag" th:field="*{requiredSkills}" multiple>
+                            <option value="Java">Java</option>
+                            <option value="Nodejs">Nodejs</option>
+                            <option value=".net">.net</option>
+                            <option value="C++">C++</option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('requiredSkills')}" th:errors="*{requiredSkills}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="levelsSelectTag" class="form-label">Level <span class="text-danger">*</span></label>
+                        <select id="levelsSelectTag" th:field="*{level}" multiple>
+                            <option value="Fresher">Fresher</option>
+                            <option value="Junior">Junior</option>
+                            <option value="Senior">Senior</option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('level')}" th:errors="*{level}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="benefitsSelectTag" class="form-label">Benefits <span class="text-danger">*</span></label>
+                        <select id="benefitsSelectTag" th:field="*{benefits}" multiple>
+                            <option value="Launch">Launch</option>
+                            <option value="25-day leave">25-day leave</option>
+                            <option value="Healthcare insurance">Healthcare insurance</option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('benefits')}" th:errors="*{benefits}"></small>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="workingAddress" class="form-label">Working Address</label>
+                        <input type="text" class="form-control" id="workingAddress" th:field="*{workingAddress}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" th:field="*{description}" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+                <a th:href="@{/jobs}" class="btn btn-secondary me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

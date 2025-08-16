@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/mainLayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head><title>Create Offer</title></head>
+<body>
+<div layout:fragment="pageTitle">Create New Offer</div>
+<div layout:fragment="content">
+    <div class="card-style">
+        <form th:action="@{/offers/create}" th:object="${offer}" method="post">
+            <div class="mb-3">
+                <label for="department" class="form-label">Department</label>
+                <input type="text" class="form-control" id="department" th:field="*{department}">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a th:href="@{/offers}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

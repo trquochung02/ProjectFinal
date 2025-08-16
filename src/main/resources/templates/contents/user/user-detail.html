@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">User Detail</title>
+</head>
+<body>
+<div layout:fragment="pageTitle">User Detail</div>
+
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a th:href="@{/users}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to User List</a>
+            <button id="activeUserButton" class="btn" th:classappend="${userDTO.status == 'Active'} ? 'btn-danger' : 'btn-success'"
+                    th:text="${userDTO.status == 'Active' ? 'Deactivate user' : 'Activate user'}"
+                    th:attr="data-user-id=${userDTO.userId}"></button>
+        </div>
+
+        <h4 class="mb-4" th:text="${userDTO.fullName}"></h4>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <strong>Username:</strong>
+                <p th:text="${userDTO.username}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Email:</strong>
+                <p th:text="${userDTO.email}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Phone Number:</strong>
+                <p th:text="${userDTO.phoneNumber}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Date of Birth:</strong>
+                <p th:text="${userDTO.dateOfBirth != null ? #temporals.format(userDTO.dateOfBirth, 'dd/MM/yyyy') : 'N/A'}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Address:</strong>
+                <p th:text="${userDTO.address}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Gender:</strong>
+                <p th:text="${userDTO.gender}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Role:</strong>
+                <p th:text="${userDTO.role}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Department:</strong>
+                <p th:text="${userDTO.department}"></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <strong>Status:</strong>
+                <p><span id="userStatus" class="badge bg-primary" th:text="${userDTO.status}"></span></p>
+            </div>
+            <div class="col-12 mb-3">
+                <strong>Notes:</strong>
+                <p th:text="${userDTO.notes}"></p>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <a th:href="@{/users}" class="btn btn-secondary me-2">Cancel</a>
+            <a th:href="@{/users/edit/{id}(id=${userDTO.userId})}" role="button" class="btn btn-primary">Edit User</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

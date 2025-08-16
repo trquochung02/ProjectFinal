@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Candidate Detail</title>
+</head>
+<body>
+<div layout:fragment="pageTitle">Candidate Detail</div>
+
+<div id="mainBoard" layout:fragment="content">
+    <div class="card-style">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a th:href="@{/candidates}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Candidate List</a>
+            <div sec:authorize="hasAnyAuthority('Admin','Manager','Recruiter')">
+                <button id="banCandidateButton" data-bs-toggle="modal"
+                        data-bs-target="#candidateBanConfirmationModal" class="btn"
+                        th:classappend="${candidate.status == 'Banned'} ? 'btn-success' : 'btn-danger'"
+                        th:text="${candidate.status == 'Banned' ? 'Re-open Candidate' : 'Ban Candidate'}">
+                </button>
+            </div>
+        </div>
+
+        <h4 class="mb-2" th:text="${candidate.fullName}"></h4>
+        <p class="text-muted fst-italic mb-4">
+            Created on <span th:text="${#temporals.format(candidate.createdAt, 'dd/MM/yyyy')}"></span>,
+            last updated by <span th:text="${currentUser.username}"></span> on <span th:text="${#temporals.format(candidate.updatedAt, 'dd/MM/yyyy')}"></span>
+        </p>
+
+        <h5>I. Personal Information</h5>
+        <hr class="mt-2 mb-4">
+        <div class="row">
+            <div class="col-md-6 mb-3"><strong>Email:</strong><p th:text="${candidate.email}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Phone Number:</strong><p th:text="${candidate.phoneNumber}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Date of Birth:</strong><p th:text="${#temporals.format(candidate.dateOfBirth, 'dd/MM/yyyy')}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Gender:</strong><p th:text="${candidate.gender}"></p></div>
+            <div class="col-md-12 mb-3"><strong>Address:</strong><p th:text="${candidate.address}"></p></div>
+        </div>
+
+        <h5 class="mt-4">II. Professional Information</h5>
+        <hr class="mt-2 mb-4">
+        <div class="row">
+            <div class="col-md-6 mb-3"><strong>Current Position:</strong><p th:text="${candidate.currentPosition}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Years of Experience:</strong><p th:text="${candidate.yearsOfExperience}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Skills:</strong><p th:text="${candidate.skills}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Highest Education Level:</strong><p th:text="${candidate.highestEducationLevel}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Recruiter Owner:</strong><p th:text="${recruiterOwnerName}"></p></div>
+            <div class="col-md-6 mb-3"><strong>Status:</strong><p><span id="candidateStatus" class="badge bg-primary" th:text="${candidate.status}"></span></p></div>
+            <div class="col-md-6 mb-3"><strong>CV Attachment:</strong>
+                <p>
+                    <a class="text-decoration-underline" th:href="@{/candidates/downloadCv(candidateId=${candidate.candidateId})}" download>
+                        <i class="bi bi-paperclip"></i> <span th:text="${cvName}"></span>
+                    </a>
+                </p>
+            </div>
+            <div class="col-12 mb-3"><strong>Notes:</strong><p th:text="${candidate.notes}"></p></div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" role="button" class="btn btn-primary" sec:authorize="hasAnyAuthority('Admin', 'Manager', 'Recruiter')">Edit Candidate</a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="candidateBanConfirmationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="#"> <div class="modal-body text-center p-4">
+                    <h5 class="modal-title mb-3">Confirm Action</h5>
+                    <p>Are you sure you want to change this candidate's status?</p>
+                </div>
+                    <div class="modal-footer d-flex justify-content-center border-top-0">
+                        <button type="button" class="btn btn-light w-50 m-0" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary w-50 m-0" th:attr="data-candidate-id=${candidate.candidateId}" id="candidateBanOkBtn">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

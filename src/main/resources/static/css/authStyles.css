@@ -1,0 +1,113 @@
+/* Đảm bảo font Poppins được tải cục bộ */
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/poppins-v21-latin-regular.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/poppins-v21-latin-500.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../fonts/poppins-v21-latin-600.woff2') format('woff2');
+}
+
+:root {
+    --primary-color: #4a6cf7;
+    --background-color: #f4f7fc;
+    --card-bg: #ffffff;
+    --font-color: #444;
+    --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --border-color: #dee2e6;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--font-color);
+    margin: 0;
+}
+
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-color);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px; /* Giảm độ rộng một chút cho cân đối hơn */
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+#formLoginHeader {
+    margin-bottom: 2rem !important;
+}
+
+#formLoginHeader img {
+    width: 40px;
+}
+
+#formLoginHeader span {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control, .form-select {
+    border-radius: 6px;
+    border-color: var(--border-color);
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(74, 108, 247, 0.25);
+}
+
+.btn-primary, .btn-secondary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    opacity: 0.9;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Cải thiện nút hiện/ẩn mật khẩu */
+.input-group-text {
+    cursor: pointer;
+    background-color: white;
+    border-left: 0;
+}
+
+.input-group .form-control {
+    border-right: 0;
+}
+
+.input-group .form-control:focus {
+    box-shadow: none;
+}
