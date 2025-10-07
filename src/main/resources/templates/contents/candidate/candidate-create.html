@@ -3,150 +3,266 @@
       layout:decorate="~{layouts/mainLayout}">
 <head>
     <meta charset="UTF-8">
-    <title layout:fragment="title">Add New Candidate</title>
-</head>
-<body>
-<div layout:fragment="pageTitle">Add New Candidate</div>
+    <title layout:fragment="title">Add new candidates</title>
+    <script src="/js/candidateScript.js"></script>
+    <script th:inline="javascript">
+        window.onload = function () {
+            const skillsSelectTag = document.getElementById('skillsSelectTag');
 
-<div id="mainBoard" layout:fragment="content">
-    <div class="card-style">
-        <div class="mb-4">
-            <a th:href="@{/candidates}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Candidate List</a>
-        </div>
-        <h4 class="mb-4">New Candidate Information</h4>
+            if (skillsSelectTag) {
+                const multipleCancelButton = new Choices(skillsSelectTag, {
+                    removeItemButton: true,
+                    maxItemCount: 5,
+                    searchResultLimit: 5,
+                    renderChoiceLimit: 5
+                });
 
-        <form th:action="@{/candidates/create}" method="post" th:object="${candidate}" enctype="multipart/form-data">
-            <h5>I. Personal Information</h5>
-            <hr class="mt-2 mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
-                        <small class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="email" th:field="*{email}" required>
-                        <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                        <select id="gender" class="form-select" th:field="*{gender}" required>
-                            <option value="">Select a gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" th:field="*{address}">
-                    </div>
-                </div>
-            </div>
+                // Sử dụng th:inline để render thành mảng JavaScript hợp lệ
+                var selectedSkills = /*[[${skillList}]]*/;
 
-            <h5 class="mt-4">II. Professional Information</h5>
-            <hr class="mt-2 mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="currentPosition" class="form-label">Position <span class="text-danger">*</span></label>
-                        <select id="currentPosition" class="form-select" th:field="*{currentPosition}" required>
-                            <option value="">Select a position...</option>
-                            <option value="Backend Developer">Backend Developer</option>
-                            <option value="Business Analyst">Business Analyst</option>
-                            <option value="Tester">Tester</option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('currentPosition')}" th:errors="*{currentPosition}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="skillsSelectTag" class="form-label">Skills <span class="text-danger">*</span></label>
-                        <select id="skillsSelectTag" th="*{skills}" multiple>
-                            <option value="Java">Java</option>
-                            <option value="Nodejs">Nodejs</option>
-                            <option value=".Net">.net</option>
-                            <option value="C++">C++</option>
-                            <option value="Python">Python</option>
-                            <option value="JavaScript">JavaScript</option>
-                            <option value="ReactJS">ReactJS</option>
-                            <option value="Angular">Angular</option>
-                            <option value="SQL">SQL</option>
-                            <option value="AWS">AWS</option>
-                            <option value="Azure">Azure</option>
-                            <option value="Business Analysis">Business Analysis</option>
-                            <option value="Communication">Communication</option>
-                            <option value="Teamwork">Teamwork</option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="yearsOfExperience" class="form-label">Years of Experience</label>
-                        <input type="number" class="form-control" id="yearsOfExperience" th:field="*{yearsOfExperience}">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="highestEducationLevel" class="form-label">Highest Education Level <span class="text-danger">*</span></label>
-                        <select id="highestEducationLevel" class="form-select" th:field="*{highestEducationLevel}" required>
-                            <option value="">Select highest level</option>
-                            <option value="High school">High school</option>
-                            <option value="Bachelor's Degree">Bachelor's Degree</option>
-                            <option value="Master Degree, PhD">Master Degree, PhD</option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('highestEducationLevel')}" th:errors="*{highestEducationLevel}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recruiterOwner" class="form-label">Recruiter <span class="text-danger">*</span></label>
-                        <select id="recruiterOwner" class="form-select" th:field="*{recruiterOwner}" required>
-                            <option value="">Select recruiter</option>
-                            <option th:each="recruiter : ${recruiters}" th:value="${recruiter.username}" th:text="${recruiter.fullName}"></option>
-                        </select>
-                        <small class="text-danger" th:if="${#fields.hasErrors('recruiterOwner')}" th:errors="*{recruiterOwner}"></small>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cv" class="form-label">CV Attachment <span class="text-danger">*</span></label>
-                        <input type="file" name="cv" id="cv" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="mb-3">
-                        <label for="notes" class="form-label">Notes</label>
-                        <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-4">
-                <a th:href="@{/candidates}" class="btn btn-secondary me-2">Cancel</a>
-                <button type="submit" class="btn btn-primary">Create Candidate</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<th:block layout:fragment="scripts">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof Choices !== 'undefined') {
-                const skillsElement = document.getElementById('skillsSelectTag');
-                if (skillsElement) {
-                    new Choices(skillsElement, { removeItemButton: true });
+                if (selectedSkills && Array.isArray(selectedSkills)) {
+                    selectedSkills.forEach(skill => {
+                        multipleCancelButton.setChoiceByValue(skill);
+                    });
                 }
+            }
+        };
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelButton = document.getElementById('cancelButton');
+            if (cancelButton) {
+                cancelButton.addEventListener('click', function() {
+                    window.location.href = '/candidates';
+                });
             }
         });
     </script>
-</th:block>
+</head>
+<body>
+<div id="mainBoard" layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav justify-content-start fs-4">
+                    <li class="nav-item">
+                        <a class="nav-link text-reset text-decoration-underline" th:href="@{/candidates}">Candidate
+                            List</a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m9 5 7 7-7 7"/>
+                        </svg>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-reset text-decoration-underline disabled" href="#" aria-disabled="true">Create
+                            candidate</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-3 py-4" id="createUserForm">
+            <form th:action="@{/candidates/create}" method="post" th:object="${candidate}" enctype="multipart/form-data">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="fw-bold">I. Personal information</h5>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full name <span style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
+                                  class="invalid-input-user text-danger"></span>
+                            <input type="text" class="form-control" placeholder="Type a name..." id="fullName"
+                                   th:field="*{fullName}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                  class="invalid-input-user text-danger"></span>
+                            <input type="text" class="form-control" placeholder="Type an email..." id="email"
+                                   th:field="*{email}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="dateOfBirth" class="form-label">D.O.B</label>
+                            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Type an address..." id="address"
+                                   th:field="*{address}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between mb-5">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone number</label>
+                            <input type="text" class="form-control" placeholder="Type a phone number..."
+                                   id="phoneNumber" th:field="*{phoneNumber}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender <span style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="gender" id="gender" class="form-select" th:field="*{gender}">
+                                <option value="">Select a gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="fw-bold">II. Professional information</h5>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="cvFileName" class="form-label">CV attachment <span style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('cvFileName')}" th:errors="*{cvFileName}"
+                                  class="invalid-input-user text-danger"></span>
+                            <input type="file" name="cv" id="cvFileName" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Note</label>
+                            <textarea name="notes" id="notes" cols="30" rows="1" placeholder="Type a note..."
+                                      class="form-control" th:field="*{notes}">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="currentPosition" class="form-label">Position <span
+                                    style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('currentPosition')}" th:errors="*{currentPosition}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="currentPosition" id="currentPosition" class="form-select"
+                                    th:field="*{currentPosition}">
+                                <option value="">Select a position... ex. Backend developer,...</option>
+                                <option value="Backend Developer">Backend Developer</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                                <option value="Tester">Tester</option>
+                                <option value="HR">HR</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Not available">Not available</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status <span style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="status" id="status" class="form-select" th:field="*{status}">
+                                <option value="">Select a status</option>
+                                <option value="Open">Open</option>
+                                <option value="Banned">Banned</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="skillsSelectTag" class="form-label">Skill <span
+                                    style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="skills" id="skillsSelectTag" th:field="*{skills}" multiple>
+                                <option value="Java">Java</option>
+                                <option value="Nodejs">Nodejs</option>
+                                <option value=".net">.net</option>
+                                <option value="C++">C++</option>
+                                <option value="Business analysis">Business analysis</option>
+                                <option value="Communication">Communication</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="yearsOfExperience" class="form-label">Year of Experience</label>
+                            <span th:if="${#fields.hasErrors('yearsOfExperience')}" th:errors="*{yearsOfExperience}"
+                                  class="invalid-input-user text-danger"></span>
+                            <input type="number" name="yearsOfExperience" id="yearsOfExperience"
+                                   class="form-control" min="0" placeholder="Type a number"
+                                   th:field="*{yearsOfExperience}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="recruiterOwner" class="form-label">Recruiter <span
+                                    style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('recruiterOwner')}" th:errors="*{recruiterOwner}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="recruiterOwner" id="recruiterOwner" class="form-select"
+                                    th:field="*{recruiterOwner}">
+                                <option value="">Recruiter name</option>
+                                <option th:each="recruiter : ${recruiters}" th:value="${recruiter.username}"
+                                        th:text="${recruiter.fullName}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <label for="highestEducationLevel" class="form-label">Highest level <span
+                                    style="color: red">*</span></label>
+                            <span th:if="${#fields.hasErrors('highestEducationLevel')}"
+                                  th:errors="*{highestEducationLevel}"
+                                  class="invalid-input-user text-danger"></span>
+                            <select name="highestEducationLevel" id="highestEducationLevel" class="form-select"
+                                    th:field="*{highestEducationLevel}">
+                                <option value="">Select highest level</option>
+                                <option value="High school">High school</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master Degree, PhD">Master Degree, PhD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-start mb-3">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-3">
+                            <button type="button" class="btn text-decoration-underline">Assign me</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn btn-secondary me-3">Submit</button>
+                    <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
